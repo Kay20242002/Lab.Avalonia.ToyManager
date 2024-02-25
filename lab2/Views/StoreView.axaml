@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="clr-namespace:lab2.ViewModels"
+			 xmlns:v="clr-namespace:lab2.Views"
+			 xmlns:c="clr-namespace:lab2.Converters"
+			 Name="root"
+             x:Class="lab2.Views.StoreView">
+	<!---->
+	<UserControl.DataTemplates>
+		<DataTemplate DataType="vm:ToyViewModel">
+			<DockPanel>
+				<Button DockPanel.Dock="Right" Command="{Binding #root.DataContext.DeleteToy}" CommandParameter="{Binding}">X</Button>
+				<v:ToyView DataContext="{Binding}" HorizontalAlignment="Stretch"/>
+			</DockPanel>
+				<!--<Button Command="{Binding $parent[v:StoreView].((vm:StoreViewModel)DataContext).DeleteToy}" CommandParameter="{Binding}">X</Button>-->
+		</DataTemplate>
+	</UserControl.DataTemplates>
+	<!---->
+	<UserControl.Resources>
+		<c:EnumConverter x:Key="EnumConverter"/>
+	</UserControl.Resources>
+	<!---->
+
+	<Grid ColumnDefinitions="*,*">
+		<StackPanel Margin="0 0 20 0">
+			
+			<TextBlock>
+				Введите в формате "название (можно с пробелами) ; возраст"
+			</TextBlock>
+			<TextBox Text="{Binding Input}"/>
+
+			<TextBlock Margin="0 20 0 0">
+				Выберите пол
+			</TextBlock>
+			
+			<ComboBox
+				SelectedValue="{Binding Gender}"
+				ItemsSource="{Binding Genders}"
+				DisplayMemberBinding="{Binding, Converter={StaticResource EnumConverter}}"/>
+
+			<StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+				<Button Command="{Binding CreateToy}" Content="Добавить"/>
+				<Button Margin="20 0" Command="{Binding Import}" Content="Import"/>
+				<Button Command="{Binding Export}" Content="Export"/>
+			</StackPanel>
+		</StackPanel>
+
+		<ItemsControl ItemsSource="{Binding Toys}" Grid.Column="1"/>
+
+	</Grid>
+
+</UserControl>

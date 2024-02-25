@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:lab2.ViewModels"
+			 xmlns:v="clr-namespace:lab2.Views"
+			 xmlns:c="clr-namespace:lab2.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:MainViewModel"
+             x:Class="lab2.Views.FilterView">
+	
+	
+	<UserControl.DataTemplates>
+		<DataTemplate DataType="vm:ToyViewModel">
+			<v:ToyView/>
+		</DataTemplate>
+	</UserControl.DataTemplates>
+	<UserControl.Resources>
+		<c:EnumConverter x:Key="EnumConverter"/>
+	</UserControl.Resources>
+	
+	
+	<Grid ColumnDefinitions="2*, 4*" RowDefinitions="50,*">
+
+		<TextBlock Grid.Row="0" Grid.Column="0" >Фильтры</TextBlock>
+		<TextBlock Grid.Row="0" Grid.Column="1">Игрушки</TextBlock>
+
+		<Panel Margin="0 0 20 0" Grid.Row="1" Grid.Column="0">
+			<StackPanel>
+
+				<TextBlock>
+					Возраст
+				</TextBlock>
+				<ComboBox
+					HorizontalAlignment="Stretch"
+					ItemsSource="{Binding Ages}"
+					SelectedItem="{Binding Age}"/>
+
+				<TextBlock Margin="0 20 0 0">
+					Пол
+				</TextBlock>
+				<ComboBox
+					HorizontalAlignment="Stretch"
+					ItemsSource="{Binding Genders}"
+					SelectedItem="{Binding Gender}"
+					DisplayMemberBinding="{Binding, Converter={StaticResource EnumConverter}}"/>
+
+
+				<Button Command="{Binding Export}">
+					Экспорт
+				</Button>
+			</StackPanel>
+		</Panel>
+
+		<ItemsControl 
+			Grid.Row="1" 
+			ItemsSource="{Binding Toys}" 
+			Grid.Column="1"/>
+	</Grid>
+
+
+</UserControl>
